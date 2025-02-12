@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAVLink UI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background: #2e2e2e;
+            padding: 20px;
+            border-radius: 10px;
+            width: 500px;
+            text-align: center;
+        }
+        input, button {
+            margin: 5px;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        input {
+            background: #555;
+            color: white;
+            border: 1px solid #777;
+            padding: 8px;
+        }
+        button {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #666;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .row label, .row input, .row button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <label>Connection String:</label>
+            <input type="text" value="/dev/ttyUSB0" size="10">
+            <input type="text" value="57600" size="6">
+            {% if is_connected %}
+            <button>Disconnect</button>
+            {% else %}
+            <button>Connect</button>
+            {% endif %}
+        </div>
+        {% if is_connected %}
+        <div class="row">
+            <label>
+                {% if is_ready_to_arm %}
+                    Ready to Arm
+                {% else %}
+                    Not Ready to Arm
+                {% endif %}
+            </label>
+        </div>
+        <div class="row">
+            <button>Arm</button>
+            <button>Disarm</button>
+        </div>
+        <div class="row">
+            <label>{{ current_mode }}</label>
+        </div>
+        <div class="row">
+            <button>Guided</button>
+            <button>Takeoff</button>
+            <input type="text" value="5" size="2">
+        </div>
+        <div class="row">
+            <button>Return to Launch</button>
+            <button>Land</button>
+            <button>Loiter</button>
+        </div>
+        <div class="row">
+            <label>alt: {{ alt }}</label>
+            <label>lon: {{ lon }}</label>
+            <label>lat: {{ lat }}</label>
+        </div>
+        <div class="row">
+            {% for text, color in logs %}
+            <p style="color: {{ color }};">{{ text }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+

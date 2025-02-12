@@ -1,1 +1,5 @@
+django
+django-stubs
 dronekit
+pyserial
+singleton-decorator
