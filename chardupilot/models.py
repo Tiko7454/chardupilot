@@ -43,10 +43,10 @@ class Drone:
         time.sleep(self.__sleep_time)
 
     def _get_coordinates(self):
-        return (self.get_altitude(), self.get_latitude(), self.get_longitude())
+        return (self.get_altitude(), self.get_longitude(), self.get_latitude())
 
     def _set_home(self):
-        self.home = self._get_coordinates
+        self.home = self._get_coordinates()
 
     def connect(self, connection_string, baud: str):
         self.vehicle = connect(connection_string, wait_ready=True, baud=int(baud))
@@ -123,7 +123,7 @@ class Drone:
             self._wait()
         print("Drone is disarmed.")
 
-    def take_off(self, target_altitude):
+    def takeoff(self, target_altitude):
         if not self.vehicle.armed:
             print("Drone was not armed")
             self.arm()
