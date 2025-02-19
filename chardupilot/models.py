@@ -28,16 +28,28 @@ class Logs:
 
 @singleton
 class Drone:
-    def __init__(self, connection_string=None):
+    def __init__(self, connection_string=None, baud="0"):
+        self.__sleep_time = 0.2
         self.logs = Logs()
         self.vehicle: Optional[Vehicle] = None
         if not connection_string:
             self.is_connected = False
+            self._set_home()
             return
-        self.connect(connection_string)
+        self.connect(connection_string, baud)
+        self._set_home()
 
-    def connect(self, connection_string):
-        self.vehicle = connect(connection_string, wait_ready=True)
+    def _wait(self):
+        time.sleep(self.__sleep_time)
+
+    def _get_coordinates(self):
+        return (self.get_altitude(), self.get_latitude(), self.get_longitude())
+
+    def _set_home(self):
+        self.home = self._get_coordinates
+
+    def connect(self, connection_string, baud: str):
+        self.vehicle = connect(connection_string, wait_ready=True, baud=int(baud))
         self.has_taken_off = False
         self.is_connected = True
 
@@ -96,19 +108,19 @@ class Drone:
         print("Basic pre-arm checks")
         while not force and not self.vehicle.is_armable:
             print("Waiting for vehicle to initialise...")
-            time.sleep(1)
+            self._wait()
 
         self.vehicle.armed = True
         while not self.vehicle.armed:
             print("Waiting for arming...")
-            time.sleep(1)
+            self._wait()
         print("Drone is armed")
 
     def disarm(self):
         self.vehicle.armed = False
         while self.vehicle.armed:
             print("Waiting for drone to disarm...")
-            time.sleep(1)
+            self._wait()
         print("Drone is disarmed.")
 
     def take_off(self, target_altitude):
@@ -120,15 +132,13 @@ class Drone:
             self.set_guided_mode()
 
         print("Taking off!")
+        self._set_home()
         self.vehicle.simple_takeoff(target_altitude)
 
         while True:
-            print("Altitude: %s" % self.vehicle.location.global_relative_frame.alt)
-            if (
-                self.vehicle.location.global_relative_frame.alt
-                >= target_altitude * 0.95
-            ):
+            print(f"Altitude: {self.get_altitude()}")
+            if self.get_altitude() >= target_altitude * 0.95:
                 print("Reached target altitude")
                 self.has_taken_off = True
                 break
-            time.sleep(1)
+            self._wait()
