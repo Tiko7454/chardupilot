@@ -17,9 +17,35 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from .views import home
+from .views import (
+    home,
+    dynamic_time,
+    get_coordinates,
+    get_ready_to_arm,
+    change_to_guided,
+    change_to_takeoff,
+    change_to_return,
+    change_to_land,
+    change_to_loiter,
+    change_armed,
+    change_disarmed,
+    connect,
+    disconnect,
+)
 
 urlpatterns = [
     path("", home),
     path("admin/", admin.site.urls),
+    path("dynamic_time/", dynamic_time, name="dynamic_time"),
+    path("get_coordinates/", get_coordinates, name="get_coordinates"),
+    path("get_ready_to_arm/", get_ready_to_arm, name="get_ready_to_arm"),
+    path("change_to_guided/", change_to_guided, name="change_to_guided"),
+    path("change_to_takeoff/", change_to_takeoff, name="change_to_takeoff"),
+    path("change_to_return/", change_to_return, name="change_to_return"),
+    path("change_to_land/", change_to_land, name="change_to_land"),
+    path("change_to_loiter/", change_to_loiter, name="change_to_loiter"),
+    path("change_armed/", change_armed, name="change_armed"),
+    path("change_disarmed/", change_disarmed, name="change_disarmed"),
+    path("disconnect/", disconnect, name="disconnect"),
+    path("connect/", connect, name="connect"),
 ]

@@ -54,48 +54,90 @@
     </style>
 </head>
 <body>
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
     <div class="container">
+        <p>Time is <label
+            id="dynamic_time"
+            hx-get="{% url 'dynamic_time' %}"
+            hx-trigger="every 5s"
+            hx-swap="innerHTML"
+        > lav chi
+        </label></p>
         <div class="row">
             <label>Connection String:</label>
-            <input type="text" value="/dev/ttyUSB0" size="10">
-            <input type="text" value="57600" size="6">
+            <input name="connection-string" id="connection-string" type="text" value="/dev/ttyUSB0" size="10">
+            <input name="baud" id="baud" type="text" value="57600" size="6">
             {% if is_connected %}
-            <button>Disconnect</button>
+            <button
+                hx-post="{% url 'disconnect' %}"
+                hx-include="#connection-string, #baud"
+                hx-on="htmx:afterRequest: window.location.reload()"
+            >Disconnect</button>
             {% else %}
-            <button>Connect</button>
+            <button
+                hx-post="{% url 'connect' %}"
+                hx-on="htmx:afterRequest: window.location.reload()"
+            >Connect</button>
             {% endif %}
         </div>
         {% if is_connected %}
         <div class="row">
-            <label>
-                {% if is_ready_to_arm %}
-                    Ready to Arm
-                {% else %}
-                    Not Ready to Arm
-                {% endif %}
+            <label id="get_ready_to_arm" >
+                {{ is_ready_to_arm }}
             </label>
         </div>
         <div class="row">
-            <button>Arm</button>
-            <button>Disarm</button>
+            <button
+                hx-get="{% url 'change_armed' %}"
+                hx-target="#get_ready_to_arm"
+                hx-swap="innerHTML"
+            >Arm</button>
+            <button
+                hx-get="{% url 'change_disarmed' %}"
+                hx-target="#get_ready_to_arm"
+                hx-swap="innerHTML"
+            >Disarm</button>
         </div>
         <div class="row">
-            <label>{{ current_mode }}</label>
+            <label id="get_current_mode" >{{ current_mode }}</label>
         </div>
         <div class="row">
-            <button>Guided</button>
-            <button>Takeoff</button>
-            <input type="text" value="5" size="2">
+            <button 
+                hx-get="{% url 'change_to_guided' %}"
+                hx-target="#get_current_mode"
+                hx-swap="innerHTML"
+            >Guided</button>
+            <button
+                hx-get="{% url 'change_to_takeoff' %}"
+                hx-target="#get_current_mode"
+                hx-swap="innerHTML"
+                hx-include="#target-altitude"
+            >Takeoff</button>
+            <input name="target-altitude" type="text" id="target-altitude" value="5" size="2">
         </div>
         <div class="row">
-            <button>Return to Launch</button>
-            <button>Land</button>
-            <button>Loiter</button>
+            <button
+                hx-get="{% url 'change_to_return' %}"
+                hx-target="#get_current_mode"
+                hx-swap="innerHTML"
+            >Return to Launch</button>
+            <button
+                hx-get="{% url 'change_to_land' %}"
+                hx-target="#get_current_mode"
+                hx-swap="innerHTML"
+            >Land</button>
+            <button
+                hx-get="{% url 'change_to_loiter' %}"
+                hx-target="#get_current_mode"
+                hx-swap="innerHTML"
+            >Loiter</button>
         </div>
-        <div class="row">
-            <label>alt: {{ alt }}</label>
-            <label>lon: {{ lon }}</label>
-            <label>lat: {{ lat }}</label>
+        <div class=""
+            id="get_coordinates"
+            hx-get="{% url 'get_coordinates' %}"
+            hx-trigger="every 0.1s"
+            hx-swap="innerHTML"
+        >
         </div>
         <div class="row">
             {% for text, color in logs %}
