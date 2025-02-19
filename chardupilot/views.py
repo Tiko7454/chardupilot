@@ -38,7 +38,6 @@ def change_to_guided(request):
 def change_to_takeoff(request):
     drone = Drone()
     target_altitude = request.GET.get("target-altitude", 0)
-    print(target_altitude)
     drone.takeoff(target_altitude)
     return HttpResponse(f"{drone.get_mode()}")
 
@@ -113,6 +112,5 @@ def connect(request):
     connected = True
     connection_string = request.POST.get("connection-string", "")
     baud = request.POST.get("baud", "0")
-    print(connection_string, baud)
     drone.connect(connection_string, baud)
     return JsonResponse({"response": "connected"})
