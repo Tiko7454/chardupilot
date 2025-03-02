@@ -63,13 +63,13 @@ def change_to_land(request):
 def change_armed(request):
     drone = Drone()
     drone.arm()
-    return HttpResponse(f"{drone.get_mode()}")
+    return get_ready_to_arm(request)
 
 
 def change_disarmed(request):
     drone = Drone()
     drone.disarm()
-    return HttpResponse(f"{drone.get_mode()}")
+    return get_ready_to_arm(request)
 
 
 def get_coordinates(request):
