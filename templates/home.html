@@ -56,13 +56,6 @@
 <body>
     <script src="https://unpkg.com/htmx.org@1.9.2"></script>
     <div class="container">
-        <p>Time is <label
-            id="dynamic_time"
-            hx-get="{% url 'dynamic_time' %}"
-            hx-trigger="every 5s"
-            hx-swap="innerHTML"
-        > lav chi
-        </label></p>
         <div class="row">
             <label>Connection String:</label>
             <input 
