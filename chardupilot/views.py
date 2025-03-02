@@ -12,7 +12,7 @@ def home(request):
         "is_connected": drone.is_connected,
         # "is_connected": connected,  # for debugging
         "is_ready_to_arm": get_is_ready_to_arm_string(drone),
-        "current_mode": drone.get_mode(),
+        "current_mode": get_mode(request),
         "logs": drone.logs.dump(),
     }
     return render(request, "home.html", data)
@@ -27,6 +27,11 @@ def get_is_ready_to_arm_string(drone):
 
 def dynamic_time(request):
     return HttpResponse(f"{datetime.datetime.now()}")
+
+
+def get_mode(requiest):
+    drone = Drone()
+    return HttpResponse(f"{drone.get_mode()}")
 
 
 def change_to_guided(request):

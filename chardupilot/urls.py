@@ -20,6 +20,7 @@ from django.urls import path
 from .views import (
     home,
     dynamic_time,
+    get_mode,
     get_coordinates,
     get_ready_to_arm,
     change_to_guided,
@@ -37,6 +38,7 @@ urlpatterns = [
     path("", home),
     path("admin/", admin.site.urls),
     path("dynamic_time/", dynamic_time, name="dynamic_time"),
+    path("get_mode/", get_mode, name="get_mode"),
     path("get_coordinates/", get_coordinates, name="get_coordinates"),
     path("get_ready_to_arm/", get_ready_to_arm, name="get_ready_to_arm"),
     path("change_to_guided/", change_to_guided, name="change_to_guided"),

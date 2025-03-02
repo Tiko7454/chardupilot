@@ -99,7 +99,12 @@
             >Disarm</button>
         </div>
         <div class="row">
-            <label id="get_current_mode" >{{ current_mode }}</label>
+            <label 
+                id="get_current_mode"
+                hx-get="{% url 'get_mode' %}"
+                hx-trigger="every 1s"
+                hx-swap="innerHTML"
+            >{{ current_mode }}</label>
         </div>
         <div class="row">
             <button 

@@ -39,6 +39,9 @@ class Drone:
         self.connect(connection_string, baud)
         self._set_home()
 
+    def log(self, msg, color="white"):
+        self.logs.add_log(msg, color)
+
     def _wait(self):
         time.sleep(self.__sleep_time)
 
