@@ -70,12 +70,12 @@
             {% if is_connected %}
             <button
                 hx-post="{% url 'disconnect' %}"
-                hx-include="#connection-string, #baud"
                 hx-on="htmx:afterRequest: window.location.reload()"
             >Disconnect</button>
             {% else %}
             <button
                 hx-post="{% url 'connect' %}"
+                hx-include="#connection-string, #baud"
                 hx-on="htmx:afterRequest: window.location.reload()"
             >Connect</button>
             {% endif %}
