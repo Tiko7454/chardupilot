@@ -65,7 +65,13 @@
         </label></p>
         <div class="row">
             <label>Connection String:</label>
-            <input name="connection-string" id="connection-string" type="text" value="/dev/ttyUSB0" size="10">
+            <input 
+                name="connection-string"
+                id="connection-string"
+                type="text"
+                value="/dev/ttyUSB0"
+                size="10"
+            >
             <input name="baud" id="baud" type="text" value="57600" size="6">
             {% if is_connected %}
             <button
@@ -118,7 +124,13 @@
                 hx-swap="innerHTML"
                 hx-include="#target-altitude"
             >Takeoff</button>
-            <input name="target-altitude" type="text" id="target-altitude" value="5" size="2">
+            <input
+                name="target-altitude"
+                type="text"
+                id="target-altitude"
+                value="5"
+                size="2"
+            >
         </div>
         <div class="row">
             <button
