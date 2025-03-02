@@ -10,7 +10,7 @@ def home(request):
     drone = Drone()
     data = {
         "is_connected": drone.is_connected,
-        "is_connected": connected,  # for debugging
+        # "is_connected": connected,  # for debugging
         "is_ready_to_arm": get_is_ready_to_arm_string(drone),
         "current_mode": drone.get_mode(),
         "logs": drone.logs.dump(),
